@@ -1,21 +1,19 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# Read resistor values
-values = pd.read_csv('data/test_run.csv', header=None,
+# Read data points
+values = pd.read_csv('data/filter436.csv', header=None,
                      names=['Voltage', 'Current'],
                      nrows=20)
 
-values.interpolate(method='cubic')
 
 # Plot points
-values.plot(x='Voltage', y='Current',
-            marker='o', markersize=2, grid='on',
-            label="No filter")
+ax = values.plot(x='Voltage', y='Current', title="IV Curve",
+            marker='o', markersize=2, grid='on', label="Filter 436nm",
+            xlim=[values.min()['Voltage'], 4])
 
+ax.set(xlabel="Voltage (V)", ylabel="Current (nA)")
+fig = ax.get_figure()
 
-plt.title('IV Curve')
-plt.xlim([values.min()['Voltage'], 3])
-plt.xlabel('Voltage (V)')
-plt.ylabel('Current (nA)')
-plt.savefig('plots/test_run.png')
+fig.savefig('plots/filter436.png')
+fig.show()
