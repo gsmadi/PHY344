@@ -16,10 +16,12 @@ yerrors = [0.96, 0.81, 0.29]
 stopping_pontentials = np.array([1.23, 0.88, 0.56])
 filter_frequencies = np.array([274E12, 229E12, 172E12])
 filter_data_points = [filter_frequencies, stopping_pontentials]
-coefficients, _, _, _, _ = np.polyfit(filter_data_points[0], filter_data_points[1],
-                                      deg=1, full=True)
+coefficients, residuals = np.polyfit(filter_data_points[0], filter_data_points[1],
+                                      deg=1, cov=True)
 slope = coefficients[0]*1E12
+slope_uncertainty = np.abs(residuals[0][0])
 intercept = coefficients[1]
+intercept_uncertainty = np.abs(residuals[1][1])
 observed = slope*frequencies + intercept
 
 model_slope = (PLANCK_CONST*1E12/CHARGE_E)
@@ -27,7 +29,11 @@ model_intercept = (POTASSIUM_WORK_FUNCTION*EV_TO_JOULES*1E12/CHARGE_E)
 photoelectric_model = model_slope*frequencies - model_intercept
 
 work_function_prediction = intercept * -CHARGE_E * JOULE_TO_EV
+work_function_prediction_uncertainty = intercept_uncertainty * CHARGE_E * JOULE_TO_EV
 plancks_const_prediction = coefficients[0] * CHARGE_E
+plancks_const_uncertainty = slope_uncertainty
+plancks_const_prediction
+plancks_const_uncertainty
 
 # Plot data points and quadratic fit
 fig, ax = plt.subplots()
