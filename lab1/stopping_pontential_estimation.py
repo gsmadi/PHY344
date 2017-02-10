@@ -3,15 +3,15 @@ import numpy as np
 import pandas as pd
 
 # Read data points
-values = pd.read_csv('data/filter580.csv', header=None,
+values = pd.read_csv('data/filter546.csv', header=None,
                      names=['Voltage', 'Current'],
-                     nrows=24)
+                     nrows=59)
 
 
-wavelength = 580E-9 # Nanometers
+wavelength = 546E-9 # Nanometers
 frequency = (1.0/wavelength)/10**4 # THz
-I_a = 0.0322  # Current plateaus at constant negative current
-V_s = 0.831 # Aparent stopping potential
+I_a = 0.1031  # Current plateaus at constant negative current
+V_s = 0.505  # Aparent stopping potential
 
 fit_points = values.loc[values['Current'] >= 0]
 coefficients, _, _, _, _ = np.polyfit(fit_points['Voltage'], fit_points['Current'],
@@ -19,7 +19,9 @@ coefficients, _, _, _, _ = np.polyfit(fit_points['Voltage'], fit_points['Current
 
 # Quadratic fit of observed data points
 a = coefficients[0]
+a
 quadratic_fit = a*(values['Voltage'] - V_s)**2 - I_a
+
 # Plot data points and quadratic fit
 fig, ax = plt.subplots()
 
@@ -30,12 +32,12 @@ fitted = ax.plot(values['Voltage'], quadratic_fit, linewidth=2,
                  linestyle="--", label="Quadratic fit")
 
 
-ax.set(title="Quadratic fit - 580nm", xlabel="Voltage (V)", ylabel="Current (nA)",
+ax.set(title="Quadratic fit - 546nm", xlabel="Voltage (V)", ylabel="Current (nA)",
        xlim=[values['Voltage'].min(), V_s + 1],
        ylim=[values['Current'].min(), values['Current'].max()])
 ax.legend(loc='upper right')
 plt.grid(True)
-fig.savefig('plots/filter580quad.png')
+fig.savefig('plots/filter546quad.png')
 fig.show()
 
 
@@ -45,6 +47,8 @@ linear_estimate = np.sqrt(quadratic_fit - I_a)
 linear_estimate
 if np.isnan(linear_estimate).any():
     stop_estimate = np.where(np.isnan(linear_estimate))[0][0]
+else:
+    stop_estimate = linear_estimate.size
 
 if stop_estimate != 0:
     linear_estimate = linear_estimate[0:stop_estimate]
@@ -59,7 +63,6 @@ intercept = coefficients[1]
 # Einstein photoelectric model
 voltages = np.linspace(values['Voltage'].min(), values['Voltage'].max(), num=240)
 linear_fit = slope * voltages + intercept
-linear_fit
 linear_fit = linear_fit.clip(0)
 stopping_pontential = np.roots(coefficients)[0]
 
@@ -70,7 +73,7 @@ voltages = np.linspace(values['Voltage'].min(), values['Voltage'].max(), num=lin
 ax2.plot(voltages, linear_fit,
                 label="Stopping potential: {:5.4} V".format(stopping_pontential))
 
-ax2.set(title="Stopping potential estimate - 580nm",
+ax2.set(title="Stopping potential estimate - 546nm",
         xlabel="Voltage (V)",
         ylabel="SQRT(I - I_a) (nA)^(1/2)",
         xlim=[values['Voltage'].min(), V_s + 0.5])
@@ -82,5 +85,5 @@ for item in leg.legendHandles:
     item.set_visible(False)
 
 plt.grid(True)
-fig2.savefig('plots/filter580estimate.png')
+fig2.savefig('plots/filter546estimate.png')
 fig2.show()

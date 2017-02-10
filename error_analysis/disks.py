@@ -1,10 +1,11 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import math
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 # Read resistor values
-values = pd.read_csv('disk_data.csv', header=None,
+values = pd.read_csv('data/disk_data.csv', header=None,
                      names=['Diameter', 'Circumference',
                             'Diameter Uncertainty',
                             'Circumference Uncertainty',
