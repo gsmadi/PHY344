@@ -38,7 +38,7 @@ plancks_const_uncertainty
 # Plot data points and quadratic fit
 fig, ax = plt.subplots()
 
-ax.plot(frequencies, observed, label="Observed fit")
+ax.plot(frequencies, observed, label="Observed fit", linestyle="--")
 
 ax.errorbar(filter_frequencies*1E-12, stopping_pontentials,
             yerr=[yerrors, yerrors], fmt='o', label="Stopping potentials")
