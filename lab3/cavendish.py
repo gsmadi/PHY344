@@ -109,7 +109,7 @@ y_fit2 = func(30*pos2[num], A_2, tau_2, omega_2, phi_2, S_2)
 
 # Prepare computed fit values for computations
 # Average Period
-T = math.pi*((1.0/abs(omega_1)) + (1.0/omega_2))
+T = math.pi*((1.0/abs(omega_1)) + (1.0/abs(omega_2)))
 S_1 = S_1*1e-2
 S_2 = S_2*1e-2
 delta_T = delta_T_1 + delta_T_2
