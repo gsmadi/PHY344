@@ -9,13 +9,13 @@ current = np.array([2.5, 2.7, 2.9, 3.1, 3.3, 3.4, 3.7, 3.8, 4.0])
 b_field = np.array([0.00375, 0.00405, 0.00435, 0.00465, 0.00495,
                     0.00510, 0.00555, 0.00570, 0.0060])
 delta_B = b_field*np.sqrt(2.28E-8 + (1.70E-10)*current**2)
-delta_B
+
 r = np.array([6.7, 7.8, 8.7, 10.2, 10.6, 11.4, 12.3, 12.8, 14.0])
 delta_r = 0.3*np.ones(len(r))  # [cm]
 
 coefficients, residuals = np.polyfit(b_field, r, deg=1, cov=True)
 
-y_fit = coefficients[0]*b_field + coefficients[1]
+y_fit = coefficients[0]*np.linspace(0.003, 0.007, num=50) + coefficients[1]
 
 slope = coefficients[0]*1E-2
 intercept = coefficients[1]*1E-2
@@ -33,7 +33,7 @@ print "\n\nmu = {} +/- {}".format(mu, delta_mu)
 # Plot data points and quadratic fit
 fig, ax = plt.subplots()
 
-ax.plot(b_field, y_fit, label="Fit", linestyle="--")
+ax.plot(np.linspace(0.003, 0.007, num=50), y_fit, label="Fit", linestyle="--")
 
 ax.errorbar(b_field, r, xerr=[delta_B, delta_B],
             yerr=[delta_r, delta_r], fmt='o', label="Observed")
