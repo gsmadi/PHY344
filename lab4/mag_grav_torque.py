@@ -8,7 +8,7 @@ g = 9.8  # [m*s^2]
 current = np.array([2.5, 2.7, 2.9, 3.1, 3.3, 3.4, 3.7, 3.8, 4.0])
 b_field = np.array([0.00375, 0.00405, 0.00435, 0.00465, 0.00495,
                     0.00510, 0.00555, 0.00570, 0.0060])
-delta_B = 0.0015*current*np.sqrt(2.28E-8 + (1.70E-10)*current**2)
+delta_B = np.sqrt(2.28E-8 + (1.70E-10)*current**2)
 
 r = np.array([6.7, 7.8, 8.7, 10.2, 10.6, 11.4, 12.3, 12.8, 14.0])
 delta_r = 0.3*np.ones(len(r))  # [cm]
@@ -43,6 +43,5 @@ ax.set(title="Magnetic torque equals Gravitational torque",
        ylabel="Radius (cm)")
 ax.legend(loc='upper left')
 plt.grid(True)
-fig.set_dpi(800)
-fig.savefig('plots/mag_grav.png')
+fig.savefig('plots/mag_grav.png', dpi=800)
 fig.show()
