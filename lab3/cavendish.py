@@ -175,7 +175,8 @@ pos2_plot, ax2 = plt.subplots()
 
 # Position 1 plot
 ax1.plot(30*pos1[num], pos1[pos], label="Observed", linestyle="", marker=".")
-ax1.plot(30*pos1[num], y_fit1, label="Fit", linestyle="--")
+ax1.plot(30*pos1[num], y_fit1, label="Fit", linestyle="--",
+         color='orange', linewidth=2)
 
 ax1.set(title="Displacement S_I in position I",
         xlabel="Time (s)", ylabel="Displacement S (cm)",
@@ -185,7 +186,8 @@ ax1.grid(True)
 
 # Position 2 plot
 ax2.plot(30*pos2[num], pos2[pos], label="Observed", linestyle="", marker=".")
-ax2.plot(30*pos2[num], y_fit2, label="Fit", linestyle="--")
+ax2.plot(30*pos2[num], y_fit2, label="Fit", linestyle="--",
+         color='orange', linewidth=2)
 
 ax2.set(title="Displacement S_II in position II", xlabel="Time (s)",
         ylabel="Displacement S (cm)",
@@ -194,5 +196,5 @@ ax2.legend(loc="upper right")
 ax2.grid(True)
 
 # Save plots
-pos1_plot.savefig("plots/pos1_datafit.png")
-pos2_plot.savefig("plots/pos2_datafit.png")
+pos1_plot.savefig("plots/pos1_datafit.png", dpi=200)
+pos2_plot.savefig("plots/pos2_datafit.png", dpi=200)
