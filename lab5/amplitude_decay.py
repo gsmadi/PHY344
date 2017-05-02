@@ -4,8 +4,8 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy import optimize
 import statsmodels.api as sm
+from scipy import optimize
 
 
 def func(t, A, tau, C):
@@ -25,7 +25,7 @@ column_names = [time, curr_0, curr_1, curr_2, curr_3]
 data = pd.read_csv("data/decay.csv", header=None,
                    names=column_names)
 
-current = [0.15, 0.25, 0.35, 0.45]
+current = np.array([0.15, 0.25, 0.35, 0.45])
 current_error = np.array([0.01, 0.02, 0.02, 0.03])
 time_error = 0.5*np.ones(10)
 
@@ -86,15 +86,14 @@ print 'I = 0.25, gamma = {} +/- {}'.format(gamma_1, delta_gamma_1)
 print 'I = 0.35, gamma = {} +/- {}'.format(gamma_2, delta_gamma_2)
 print 'I = 0.45, gamma = {} +/- {}'.format(gamma_3, delta_gamma_3)
 
-gammas = [gamma_0, gamma_1, gamma_2, gamma_3]
+gammas = np.array([gamma_0, gamma_1, gamma_2, gamma_3])
 gamma_errors = np.array([delta_gamma_0, delta_gamma_1,
                          delta_gamma_2, delta_gamma_3])
 
-model = sm.OLS(gammas, current)
-fit = model.fit()
-slope = fit.params[0]
+coeff, residual, _, _, _ = np.polyfit(current, gammas,
+                                      deg=2, full=True)
 
-y_fit = slope*np.array(current)
+y_fit = coeff[0]*current**2 + coeff[1]*current + coeff[2]
 
 # Plot data
 decay, ax = plt.subplots()
@@ -122,7 +121,8 @@ ax.set(title="Torsion Pendulum damping current decay",
 ax.legend(loc="lower left")
 ax.grid(True)
 
-ax1.errorbar(current, gammas, marker='^', linestyle='', color='orange',
+ax1.errorbar(current, gammas, marker='^', label='Computed', linestyle='',
+             color='grey',
              xerr=[current_error, current_error],
              yerr=[gamma_errors, gamma_errors])
 ax1.plot(current, y_fit, label='Fit', linestyle='--', color='orange')
